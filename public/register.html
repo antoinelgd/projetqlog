@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<title>Register</title>
+	<meta charset="UTF-8">
+</head>
+<body>
+	
+
+	<div>
+		<input id="username" type="text" placeholder="Username">
+    </div>
+
+    <div>
+		<input id="email" type="text" placeholder="Email">
+    </div>
+
+    <div>
+		<input id="password" type="password" placeholder="Password">
+	</div>
+
+	<div>
+		<input id="confirmpassword" type="password" placeholder="Confirm Password">
+	</div>
+
+	<div>
+		<button id="logInButton" onclick="register()">
+			Register
+		</button>
+    </div>
+    
+    <a href="http://localhost:3000">Already have an account ? Login</a>
+
+
+</body>
+<script>
+	async function register(){
+		const name = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const email = document.getElementById('email').value;
+		const confirmpassword = document.getElementById('confirmpassword').value;
+       
+        
+        if(password === confirmpassword){
+            const data = {name,email,password};
+            const options = {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(data)
+            };
+            const response = await fetch('/users',options);
+            const status = await response.status;
+            console.log(status);
+        }		
+	}
+</script>
+
+
+
+</html>

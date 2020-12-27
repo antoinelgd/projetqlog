@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<title>Register</title>
+	<meta charset="UTF-8">
+</head>
+<body>
+
+
+DEVICES AVAILABLE
+
+<ul>
+	<% for(let device of devices){ %>
+	<li name='<% device.name %>'>
+		<%= device.name %>
+		<%= device.version %>
+		<%= device.ref %>
+		<%= device.stock %>
+		<% if (device.stock > 0) { %>
+			<button for='<% device.name %>'>Emprunter</button>
+		<% } %>
+	</li>
+		
+	<% } %>
+</ul>
+
+
+<form action="/logout" method="POST">
+<button type="submit">Logout</button>
+</form>
+
+</body>
+<script>
+	const cookies = document.cookie
+	console.log(cookies)
+</script>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<title>Login</title>
+	<meta charset="UTF-8">
+</head>
+<body>
+	
+
+	<div>
+		<input id="username" type="text" placeholder="Username">
+	</div>
+
+	<div>
+		<input id="password" type="password" placeholder="Password">
+	</div>
+
+	<div>
+		<button id="logInButton" onclick="logIn()">
+			Login
+		</button>
+	</div>
+
+	<a href="http://localhost:3000/register">Don't have an account ? Register</a>
+
+
+</body>
+<script>
+
+
+	const cookies = document.cookie
+	console.log(cookies)
+
+
+	async function logIn(){
+		const name = document.getElementById('username').value;
+		const password = document.getElementById('password').value;
+		const data = {username,password};
+		const options = {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(data)
+		};
+		const response = await fetch('/users/login',options);
+		const json = await response.json();
+		console.log(json);
+	}
+</script>
+
+
+
+</html>
