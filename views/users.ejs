@@ -1,0 +1,48 @@
+<h1>Users</h1>
+
+<table>
+    <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Admin</th>
+    </tr>
+
+    <% users.forEach(user => { %>
+        <tr>
+            <td><%= user.username %>  </td>
+            <td><%= user.email %>  </td>
+            <% if (user.admin) { %>
+                <td>True</td>
+            <% } else { %>
+                <td>False</td>
+            <% } %>
+            <td>
+                <button onclick="deleteUser('<%= user.email%>')">Delete</button>
+            </td>
+        </tr>
+    <% }) %>
+
+</table>
+
+<form action="/user/new" method="GET">
+    <input type="submit" value="Create new user">
+</form>
+
+<form action="/">
+    <button type="submit">Go back</button>
+</form>
+
+<script>
+    async function deleteUser(email){
+        const data = {email}
+		const options = {
+			method: 'DELETE',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(data)
+		}
+		const response = await fetch('/user', options)
+		location.reload()
+    }
+</script>

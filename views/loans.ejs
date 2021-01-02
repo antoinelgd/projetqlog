@@ -1,0 +1,46 @@
+<h1>Loans</h1>
+
+<table>
+    <tr>
+        <th>Device</th>
+        <th>Starting Date</th>
+        <th>Ending Date</th>
+        <th>Borrower</th>
+    </tr>
+    <% loans.forEach(loan => { %>
+        <tr>
+            <td><%= loan.name %> </td>
+            <td><%= loan.loan_start.toLocaleDateString() %> </td>
+            <td><%= loan.loan_end.toLocaleDateString() %> </td>
+            <td><%= loan.username %> </td>
+
+            <% if (admin) { %>
+                <td>
+                    <button onclick="delLoan('<%= loan.loan_id %>')" >Delete</button>
+                </td>
+            <% } %>
+
+        </tr>
+    <% }) %>
+
+
+</table>
+
+<form action="/">
+    <button type="submit">Go back</button>
+</form>
+
+<script>
+    async function deleteUser(email){
+        const data = {email}
+		const options = {
+			method: 'DELETE',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(data)
+		}
+		const response = await fetch('/user', options)
+		location.reload()
+    }
+</script>

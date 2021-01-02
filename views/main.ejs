@@ -1,36 +1,95 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-	<title>Register</title>
+	<title>Qlog Application</title>
 	<meta charset="UTF-8">
 </head>
 <body>
 
 
-DEVICES AVAILABLE
+<h1>DEVICES AVAILABLE</h1>
+<table>
+	<tr>
+		<th>Device name</th>
+		<th>Version</th>
+		<th>Reference</th>
+		<th>Stock</th>
+	</tr>
+	<% devices.forEach(device => { %>
+	<tr>
+		<td><%= device.name %>  </td>
+		<td><%= device.version %>  </td>
+		<td><%= device.ref %>  </td>
+		<td><%= device.stock %>  </td>
 
-<ul>
-	<% for(let device of devices){ %>
-	<li name='<% device.name %>'>
-		<%= device.name %>
-		<%= device.version %>
-		<%= device.ref %>
-		<%= device.stock %>
-		<% if (device.stock > 0) { %>
-			<button for='<% device.name %>'>Emprunter</button>
+		<% if (admin) { %>
+			<td>
+				<button onclick="delDevice('<%= device.ref %>')" >Delete</button>
+			</td>
+			<td>
+				<form action="/device/edit/<%= device.deviceID %>" method="GET">
+					<button type="submit">Edit</button>
+				</form>
+			</td>
 		<% } %>
-	</li>
-		
-	<% } %>
-</ul>
+		<% if (device.stock > 0) { %>
+			<td>
+				<form action="/borrow/<%= device.ref %> ">
+					<button type="submit">Borrow</button>
+				</form>
 
+				
+			</td>
+		<% } else { %>
+			<td>
+				Device unavailable
+			</td>
+		<% } %>
+
+
+	</tr>
+	<% }) %>
+</table>
 
 <form action="/logout" method="POST">
 <button type="submit">Logout</button>
 </form>
 
+<% if (admin) { %>
+	<form action="/users">
+		<button type="submit">Show users</button>
+	</form>
+
+	<form action="/loans">
+		<button type="submit">Show loans</button>
+	</form>
+	<form action="/device" method="GET">
+		<input type="submit" value="Add Device">
+	</form>
+<% } %>
+
 </body>
 <script>
+
+	async function borrow(ref,name){
+		const route = "/borrow/".concat(ref)
+		const response = await fetch(route)
+		
+	}
+	
+	async function delDevice(ref){
+		
+		const data = {ref}
+		const options = {
+			method: 'DELETE',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(data)
+		}
+		const response = await fetch('/device', options)
+		location.reload()
+	}
 	const cookies = document.cookie
 	console.log(cookies)
 </script>

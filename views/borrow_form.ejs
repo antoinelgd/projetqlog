@@ -1,0 +1,21 @@
+<h1>Borrow device <%= ref%></h1>
+
+<form action="/borrow" method="POST">
+    <div>
+        <label for="startdate">Select the starting date</label>
+        <input type="date" name="startdate" id="startdate" required>
+    </div>
+    
+    <div>
+        <label for="enddate">Select the ending date</label>
+        <input type="date" name="enddate" id="enddate" required>
+    </div>
+    
+    <div>
+        <input type="hidden" name="ref" value="<%=ref%>" id="ref">
+    </div>
+
+    <button type="submit">Borrow</button>
+</form>
+
+<form action="/"><button type="submit">Cancel</button></form>

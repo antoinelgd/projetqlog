@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "devStart": "nodemon server.js"
+    "devStart": "nodemon server.js",
+    "test": "mocha"
   },
   "author": "",
   "license": "ISC",
@@ -17,5 +18,8 @@
     "jsonwebtoken": "^8.5.1",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.6"
+  },
+  "devDependencies": {
+    "mocha": "^8.2.1"
   }
 }

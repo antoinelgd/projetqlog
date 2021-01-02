@@ -1,0 +1,25 @@
+<h1>Add a new device</h1>
+
+<form action="/device" method="POST">
+    <div>
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required>
+    </div>
+    <div>
+        <label for="version">Version</label>
+        <input type="text" id="version" name="version" required>
+    </div>
+    <div>
+        <label for="ref">Reference</label>
+        <input type="text" id="ref" name="ref" required>
+    </div>
+    <div>
+        <label for="stock">Stock</label>
+        <input type="text" id="stock" name="stock" required>
+    </div>
+    <input type="submit" value="Add">
+</form>
+
+<form action="../">
+    <button type="submit">Cancel</button>
+</form>
