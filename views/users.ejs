@@ -2,20 +2,28 @@
 
 <table>
     <tr>
-        <th>Username</th>
+        <th>Firstname</th>
+        <th>Lastname</th>
         <th>Email</th>
         <th>Admin</th>
     </tr>
 
     <% users.forEach(user => { %>
         <tr>
-            <td><%= user.username %>  </td>
+            <td><%= user.firstname %>  </td>
+            <td><%= user.lastname %>  </td>
             <td><%= user.email %>  </td>
+            <td><%= user.regnumber %>  </td>
             <% if (user.admin) { %>
                 <td>True</td>
             <% } else { %>
                 <td>False</td>
             <% } %>
+            <td>
+				<form action="/user/edit/<%= user.regnumber %>" method="GET">
+					<button type="submit">Edit</button>
+				</form>
+			</td>
             <td>
                 <button onclick="deleteUser('<%= user.email%>')">Delete</button>
             </td>
