@@ -1,6 +1,7 @@
 const assert = require('chai').assert
 const app = require('../server')
 const mysql = require('mysql')
+const sinon = require('sinon')
 
 
 
@@ -11,9 +12,8 @@ const connection = mysql.createConnection({
     database: process.env.DATABASE_DATABASE
 })
 
-describe('App', function(){
-    it('should return users', function(){
-        let result = app.sayHello();
-        assert.equal(result,'hello')
+describe('Users', function(){
+    it('should return true', function(){
+         
     })
 })
