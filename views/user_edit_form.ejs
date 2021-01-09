@@ -1,27 +1,29 @@
-<h1>Edit user <%= user.firstname%> <%= user.lastname%></h1>
+<h1>Edit user <%= user.firstname%>
+        <%= user.lastname%>
+</h1>
 <h3>(leave blank fields you don't want to edit)</h3>
 
 <form action="/user/edit" method="POST">
     <div>
         <label for="firstname">Firstname</label>
-        <input type="text" id="firstname" name="firstname" placeholder="<%= user.firstname%>" >
+        <input type="text" id="firstname" name="firstname" placeholder="<%= user.firstname%>">
     </div>
     <div>
         <label for="lastname">Lastname</label>
-        <input type="text" id="lastname" name="lastname" placeholder="<%= user.lastname%>" >
+        <input type="text" id="lastname" name="lastname" placeholder="<%= user.lastname%>">
     </div>
     <div>
         <label for="email">Email</label>
-        <input type="text" id="email" name="email" placeholder="<%= user.email%>" >
+        <input type="text" id="email" name="email" placeholder="<%= user.email%>">
     </div>
     <div>
         <label for="password">Password</label>
-        <input type="password" id="password" name="password" >
+        <input type="password" id="password" name="password">
     </div>
     <div>
         <label for="admin">Admin</label>
         <input type="checkbox" id="admin" name="admin" value="1" <% if (user.admin) { %>
-            checked
+        checked
         <% } %> >
     </div>
 

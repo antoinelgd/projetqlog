@@ -1,21 +1,22 @@
-<h1>Edit device <%= device.name%></h1>
+<h1>Edit device <%= device.name%>
+</h1>
 
 <form action="/device/edit" method="POST">
     <div>
         <label for="name">Name</label>
-        <input type="text" id="name" name="name" placeholder="<%= device.name%>" >
+        <input type="text" id="name" name="name" placeholder="<%= device.name%>">
     </div>
     <div>
         <label for="version">Version</label>
-        <input type="text" id="version" name="version" placeholder="<%= device.version%>" >
+        <input type="text" id="version" name="version" placeholder="<%= device.version%>">
     </div>
     <div>
         <label for="ref">Reference</label>
-        <input type="text" id="ref" name="ref" placeholder="<%= device.ref%>" >
+        <input type="text" id="ref" name="ref" placeholder="<%= device.ref%>">
     </div>
     <div>
         <label for="stock">Stock</label>
-        <input type="text" id="stock" name="stock" placeholder="<%= device.stock%>" >
+        <input type="text" id="stock" name="stock" placeholder="<%= device.stock%>">
     </div>
 
     <div>

@@ -8,27 +8,41 @@
         <th>Admin</th>
     </tr>
 
-    <% users.forEach(user => { %>
+    <% users.forEach(user=> { %>
         <tr>
-            <td><%= user.firstname %>  </td>
-            <td><%= user.lastname %>  </td>
-            <td><%= user.email %>  </td>
-            <td><%= user.regnumber %>  </td>
+            <td>
+                <%= user.firstname %>
+            </td>
+            <td>
+                <%= user.lastname %>
+            </td>
+            <td>
+                <%= user.email %>
+            </td>
+            <td>
+                <%= user.regnumber %>
+            </td>
             <% if (user.admin) { %>
                 <td>True</td>
-            <% } else { %>
-                <td>False</td>
-            <% } %>
-            <td>
-				<form action="/user/edit/<%= user.regnumber %>" method="GET">
-					<button type="submit">Edit</button>
-				</form>
-			</td>
-            <td>
-                <button onclick="deleteUser('<%= user.email%>')">Delete</button>
-            </td>
+                <% } else { %>
+                    <td>False</td>
+                    <% } %>
+
+                        <td>
+                            <form action="/user/loans/<%= user.regnumber %>" method="GET">
+                                <button type="submit">Show loans</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form action="/user/edit/<%= user.regnumber %>" method="GET">
+                                <button type="submit">Edit</button>
+                            </form>
+                        </td>
+                        <td>
+                            <button onclick="deleteUser('<%= user.email%>')">Delete</button>
+                        </td>
         </tr>
-    <% }) %>
+        <% }) %>
 
 </table>
 
@@ -41,16 +55,16 @@
 </form>
 
 <script>
-    async function deleteUser(email){
-        const data = {email}
-		const options = {
-			method: 'DELETE',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(data)
-		}
-		const response = await fetch('/user', options)
-		location.reload()
+    async function deleteUser(email) {
+        const data = { email }
+        const options = {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }
+        const response = await fetch('/user', options)
+        location.reload()
     }
 </script>

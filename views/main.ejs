@@ -1,85 +1,95 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
 	<title>Qlog Application</title>
 	<meta charset="UTF-8">
 </head>
+
 <body>
 
 
-<h1>DEVICES AVAILABLE</h1>
-<table>
-	<tr>
-		<th>Device name</th>
-		<th>Version</th>
-		<th>Reference</th>
-		<th>Stock</th>
-	</tr>
-	<% devices.forEach(device => { %>
-	<tr>
-		<td><%= device.name %>  </td>
-		<td><%= device.version %>  </td>
-		<td><%= device.ref %>  </td>
-		<td><%= device.stock %>  </td>
+	<h1>DEVICES AVAILABLE</h1>
+	<table>
+		<tr>
+			<th>Device name</th>
+			<th>Version</th>
+			<th>Reference</th>
+			<th>Stock</th>
+		</tr>
+		<% devices.forEach(device=> { %>
+			<tr>
+				<td>
+					<%= device.name %>
+				</td>
+				<td>
+					<%= device.version %>
+				</td>
+				<td>
+					<%= device.ref %>
+				</td>
+				<td>
+					<%= device.stock %>
+				</td>
 
-		<% if (admin) { %>
-			<td>
-				<button onclick="delDevice('<%= device.ref %>')" >Delete</button>
-			</td>
-			<td>
-				<form action="/device/edit/<%= device.deviceID %>" method="GET">
-					<button type="submit">Edit</button>
-				</form>
-			</td>
+				<% if (admin) { %>
+					<td>
+						<button onclick="delDevice('<%= device.ref %>')">Delete</button>
+					</td>
+					<td>
+						<form action="/device/edit/<%= device.deviceID %>" method="GET">
+							<button type="submit">Edit</button>
+						</form>
+					</td>
+					<% } %>
+						<% if (device.stock> 0) { %>
+							<td>
+								<form action="/borrow/<%= device.ref %> ">
+									<button type="submit">Borrow</button>
+								</form>
+
+
+							</td>
+							<% } else { %>
+								<td>
+									Device unavailable
+								</td>
+								<% } %>
+
+
+			</tr>
+			<% }) %>
+	</table>
+
+	<form action="/logout" method="POST">
+		<button type="submit">Logout</button>
+	</form>
+
+	<% if (admin) { %>
+		<form action="/users">
+			<button type="submit">Show users</button>
+		</form>
+
+		<form action="/loans">
+			<button type="submit">Show loans</button>
+		</form>
+		<form action="/device" method="GET">
+			<input type="submit" value="Add Device">
+		</form>
 		<% } %>
-		<% if (device.stock > 0) { %>
-			<td>
-				<form action="/borrow/<%= device.ref %> ">
-					<button type="submit">Borrow</button>
-				</form>
-
-				
-			</td>
-		<% } else { %>
-			<td>
-				Device unavailable
-			</td>
-		<% } %>
-
-
-	</tr>
-	<% }) %>
-</table>
-
-<form action="/logout" method="POST">
-<button type="submit">Logout</button>
-</form>
-
-<% if (admin) { %>
-	<form action="/users">
-		<button type="submit">Show users</button>
-	</form>
-
-	<form action="/loans">
-		<button type="submit">Show loans</button>
-	</form>
-	<form action="/device" method="GET">
-		<input type="submit" value="Add Device">
-	</form>
-<% } %>
 
 </body>
 <script>
 
-	async function borrow(ref,name){
+	async function borrow(ref, name) {
 		const route = "/borrow/".concat(ref)
 		const response = await fetch(route)
-		
+
 	}
-	
-	async function delDevice(ref){
-		
-		const data = {ref}
+
+	async function delDevice(ref) {
+
+		const data = { ref }
 		const options = {
 			method: 'DELETE',
 			headers: {
