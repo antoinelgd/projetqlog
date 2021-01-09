@@ -17,3 +17,5 @@ To get the testing report, you can run the command "npm run test" or run the "te
 GIT : https://github.com/antoinelgd/projetqlog
 
 ADMIN ACC LOGS : admin@locaMat.fr passwordAdmin
+
+(other accounts in the "login_password.txt" file)
