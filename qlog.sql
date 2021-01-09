@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.2
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  ven. 08 jan. 2021 à 20:53
--- Version du serveur :  10.4.10-MariaDB
--- Version de PHP :  7.3.12
+-- Généré le : sam. 09 jan. 2021 à 13:56
+-- Version du serveur :  5.7.31
+-- Version de PHP : 7.3.21
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -19,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données :  `qlog`
+-- Base de données : `qlog`
 --
 
 -- --------------------------------------------------------
@@ -36,21 +35,18 @@ CREATE TABLE IF NOT EXISTS `devices` (
   `ref` varchar(5) NOT NULL,
   `stock` int(11) DEFAULT NULL,
   PRIMARY KEY (`deviceID`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `devices`
 --
 
 INSERT INTO `devices` (`deviceID`, `name`, `version`, `ref`, `stock`) VALUES
-(9, 'OnePlusOne', 'V1', 'OP1', 1),
-(18, 'OnePlus 7', '7', 'OP7', 1),
-(22, 'iPhone6', '6', 'AP6', 5),
-(27, 'OnePlus 5', 'V5', 'OP5', 2),
-(28, 'OnePlus 5T', 'V5T', 'OP5T', 7),
-(29, 'Oneplus 7 Pro', 'V7P', 'OP7P', 30),
-(30, 'OnePlus9', 'V9', 'OP9', 9),
-(31, 'Razer Blade 15', 'V15', 'RB15', 1);
+(34, 'Samsung S10', 'V8.0', 'AN001', 5),
+(35, 'OnePlus 7', 'V11.0', 'AN002', 20),
+(36, 'Nokia 3310', 'V1.2', 'TC001', 1142),
+(37, 'Iphone X', 'V14.3', 'AA001', 33),
+(38, 'Blackberry Bold 9900 ', 'V9.0', 'BB001', 4);
 
 -- --------------------------------------------------------
 
@@ -68,14 +64,23 @@ CREATE TABLE IF NOT EXISTS `loans` (
   PRIMARY KEY (`loan_id`),
   KEY `fk_deviceid` (`deviceID`),
   KEY `fk_userid` (`borrower`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `loans`
 --
 
 INSERT INTO `loans` (`loan_id`, `deviceID`, `loan_start`, `loan_end`, `borrower`) VALUES
-(28, 18, '2021-01-21', '2021-02-05', 1000002);
+(31, 38, '2021-01-16', '2021-01-23', 1000015),
+(32, 38, '2021-01-16', '2021-01-23', 1000013),
+(33, 38, '2021-01-16', '2021-01-23', 1000014),
+(34, 38, '2021-01-16', '2021-01-23', 1000011),
+(35, 36, '2021-01-01', '2031-01-01', 1000010),
+(36, 34, '2021-01-09', '2021-01-09', 1000010),
+(37, 36, '2021-01-09', '2021-01-16', 1000010),
+(38, 38, '2021-01-24', '2021-01-30', 1000010),
+(39, 38, '2021-01-24', '2021-01-30', 1000015),
+(40, 35, '2021-01-09', '2021-02-06', 1000009);
 
 -- --------------------------------------------------------
 
@@ -94,7 +99,7 @@ CREATE TABLE IF NOT EXISTS `refresh_tokens` (
 --
 
 INSERT INTO `refresh_tokens` (`token`) VALUES
-('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJAYiIsImlhdCI6MTYxMDEyODQ3Mn0.kBv6Z48x1xW3_rsKT7C_hhMFKEwSv4maZLELwMK5_VU');
+('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FNYXQuZnIiLCJpYXQiOjE2MTAyMDA1NDN9.1Qo3Dv0Xmusx4iUmUL_OA-Sqa-qrqtlnBsXLCIFsglo');
 
 -- --------------------------------------------------------
 
@@ -109,18 +114,21 @@ CREATE TABLE IF NOT EXISTS `users` (
   `email` varchar(100) NOT NULL,
   `password` varchar(60) NOT NULL,
   `regnumber` int(11) NOT NULL AUTO_INCREMENT,
-  `admin` tinyint(1) NOT NULL DEFAULT 1,
+  `admin` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`regnumber`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000005 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1000016 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `users`
 --
 
 INSERT INTO `users` (`lastname`, `firstname`, `email`, `password`, `regnumber`, `admin`) VALUES
-('a', 'a', 'a@a', '$2b$10$0bzE0bGtE8wpefAhgp61wO0NLEZLhfxowvXQK8PGuP37TbonyG4jO', 1000002, 1),
-('b', 'b', 'b@b', '$2b$10$vS1EkyLMlEjxjQo92RzWT.ZQDOb4BSTIT4Kn45wdV0tLWzZ8COHVe', 1000003, 1),
-('c', 'c', 'c@c', '$2b$10$Sr1L6fb7Xt7cN1zPM7RhoezjpWwZ8USfu/aaBShXJCtXBV7FGYWYu', 1000004, 0);
+('Jordan', 'Michael', 'michael.jordan@gmail.com', '$2b$10$MTmemI0AYsxy2J76OJihY.3Y3eiNLKmXCecYfiYa9IvX7MOPrAwFm', 1000009, 0),
+('Raoult', 'Didier', 'iambullshit@laposte.net', '$2b$10$9gUlhniS4rIBPb2pLR4E9O4IlC/.ECuiUnq6su0HX3AS3p1p/hMp2', 1000010, 0),
+('Mbappe', 'Kylian', 'petitpont@hotmail.com', '$2b$10$NUVs.r/gOzzAvtDgMz5wb./DtP694P1Zd5nTd.kAk6WR3yaNzLLS.', 1000011, 1),
+('Claquart', 'Taudine', 'taudine.claquart@univ-tours.fr', '$2b$10$8CEFLgcHxodFdDY/yNVuV.FX4yISPjBwz6D2ebXGW08OOoYWEa1fq', 1000013, 0),
+('Hamilton', 'Lewis', 'alwaysP1@gmail.com', '$2b$10$38/1o3Nj8mULUeFZOrmlfeFvZ0pat7P5m.o3SHq5MoCnFcLmzDsKi', 1000014, 0),
+('admin', 'admin', 'admin@locaMat.fr', '$2b$10$wsqEZRcD/4Wr8LCFQrRXGeFCQmHCGzIHgNIV5CqXusCjpsMRzVaJa', 1000015, 1);
 
 --
 -- Contraintes pour les tables déchargées

@@ -25,6 +25,7 @@ app.use(express.json())
 app.use(cookieParser())
 
 module.exports = {
+    app,
     connection,
     mainPage,
     loginPage,
@@ -173,7 +174,6 @@ async function refreshAccessToken(req, res) {
 
 async function usersPage(req, res) {
     const users = await getUsers()
-    console.log(users)
     res.render('users', { users: users })
 }
 
@@ -218,7 +218,6 @@ async function editUserPage(req, res) {
 
 
 async function editUser(req, res) {
-    console.log(req.body)
     if (req.body.firstname != '') {
         connection.query('UPDATE users SET firstname = ? WHERE regnumber = ?', [req.body.firstname, req.body.regnumber], function (err, res, fields) {
             if (err) throw err
@@ -312,7 +311,6 @@ async function loansPage(req, res) {
 
 async function editDevicePage(req, res) {
     const device = await getDeviceByID(req.params.id)
-    //console.log(device)
     res.render('deviceEdit_form', { id: req.params.id, device: device })
 }
 
@@ -341,7 +339,6 @@ function editDevice(req, res) {
 }
 
 async function userLoansPage(req,res){
-    console.log(req.body)
     const loans = await getLoansOfUser(req.params.regnumber)
     res.render('loans', { loans: loans, admin: req.admin })
 }
@@ -372,7 +369,6 @@ async function checkDeviceAvailability(ref, startDate, endDate) {
         else if (isDateInsideLoan(endDate, Date.parse(loan.loan_start), Date.parse(loan.loan_end))) stockAvailable--
 
     });
-    console.log(stockAvailable)
     if (stockAvailable < 1) return false
     else return true
 }

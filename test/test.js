@@ -4,9 +4,11 @@ const expect = chai.expect
 const chaiAsPromised = require('chai-as-promised')
 const conn = require('../server').connection
 const app = require('../server')
+const server = require('../server').app
 const sinon = require('sinon')
 const mockUser = require('../mock/mockUser.json')
 const mockDevice = require('../mock/mockDevice.json')
+const bcrypt = require('bcrypt')
 
 chai.use(chaiAsPromised)
 
@@ -14,11 +16,11 @@ afterEach(() => {
     sinon.restore()
 })
 
-describe('User existance', function () {
+describe('Users', function () {
 
     const connmock = sinon.mock(conn)
 
-    it('should return true', async function () {
+    it('should return true if user exists', async function () {
 
         conn.query('INSERT INTO users (lastname,firstname,email,password,admin) VALUES (?,?,?,?,?)',
             [mockUser.lastname, mockUser.firstname, mockUser.email, mockUser.password, mockUser.admin],
@@ -32,12 +34,36 @@ describe('User existance', function () {
 
     })
 
-    it('should return false', async function () {
+    it('Should return an array which length is equal to the number of users in database', async function () {
 
-        const result = await app.checkUserExists(mockUser.email)
-        expect(result).to.be.false
+        conn.query('SELECT count(*) FROM users', async function (err, res, fie) {
+            const count = res[0]
+            const users = await app.getUsers()
+            expect(users.length).to.be.equal(count)
+        })
+    })
+
+    it('Should return the password of the user', async function(){
+        conn.query('INSERT INTO users (lastname,firstname,email,password,admin) VALUES (?,?,?,?,?)',
+        [mockUser.lastname, mockUser.firstname, mockUser.email, mockUser.password, mockUser.admin],
+        function (error, results, fields) { })
+
+        const password = await app.getPassword(mockUser.email)
+        expect(password).to.be.equal(mockUser.password)
+
+        conn.query('DELETE FROM users WHERE email = ?', mockUser.email,
+        function (error, results, fields) { })
 
     })
+
+    it('Should return the regnumber of the user', async function(){
+        const password = await app.getUser('admin@locaMat.fr')
+        expect(password).to.be.equal(1000015)
+
+    })
+
+
+
 })
 
 describe('Date check', function () {
@@ -63,9 +89,18 @@ describe('Loans', function () {
 
     it('Should return an array which length is equal to the number of loans of a particular device', async function () {
 
-        conn.query('SELECT count(*) FROM devices JOIN loans ON loans.deviceID = devices.deviceID JOIN users ON loans.borrower = users.regnumber WHERE devices.ref = ?',mockDevice.ref, async function (err, res, fie) {
+        conn.query('SELECT count(*) FROM devices JOIN loans ON loans.deviceID = devices.deviceID JOIN users ON loans.borrower = users.regnumber WHERE devices.ref = ?', mockDevice.ref, async function (err, res, fie) {
             const count = res[0]
             const loans = await app.getLoansOfDevice(mockDevice.ref)
+            expect(loans.length).to.be.equal(count)
+        })
+    })
+
+    it('Should return an array which length is equal to the number of loans of a particular user', async function () {
+
+        conn.query('SELECT count(*) FROM devices JOIN loans ON loans.deviceID = devices.deviceID JOIN users ON loans.borrower = users.regnumber WHERE users.regnumber = ?', mockUser.regnumber, async function (err, res, fie) {
+            const count = res[0]
+            const loans = await app.getLoansOfUser(mockUser.regnumber)
             expect(loans.length).to.be.equal(count)
         })
     })
@@ -73,6 +108,17 @@ describe('Loans', function () {
 })
 
 
-describe('Devices', function(){
-    it('Should ')
+describe('Devices', function () {
+    it('Should return an array which length is equal to the number of devices', async function () {
+
+        conn.query('SELECT count(*) FROM devices', async function (err, res, fie) {
+            const count = res[0]
+            const devices = await app.getLoansOfUser(mockUser.regnumber)
+            expect(devices.length).to.be.equal(count)
+        })
+    })
+})
+
+describe('Tokens', function(){
+    it('')
 })
