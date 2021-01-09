@@ -120,7 +120,6 @@ INSERT INTO `users` (`lastname`, `firstname`, `email`, `password`, `regnumber`, 
 ('Jordan', 'Michael', 'michael.jordan@gmail.com', '$2b$10$MTmemI0AYsxy2J76OJihY.3Y3eiNLKmXCecYfiYa9IvX7MOPrAwFm', 1000009, 0),
 ('Raoult', 'Didier', 'iambullshit@laposte.net', '$2b$10$9gUlhniS4rIBPb2pLR4E9O4IlC/.ECuiUnq6su0HX3AS3p1p/hMp2', 1000010, 0),
 ('Mbappe', 'Kylian', 'petitpont@hotmail.com', '$2b$10$NUVs.r/gOzzAvtDgMz5wb./DtP694P1Zd5nTd.kAk6WR3yaNzLLS.', 1000011, 1),
-('Claquart', 'Taudine', 'taudine.claquart@univ-tours.fr', '$2b$10$8CEFLgcHxodFdDY/yNVuV.FX4yISPjBwz6D2ebXGW08OOoYWEa1fq', 1000013, 0),
 ('Hamilton', 'Lewis', 'alwaysP1@gmail.com', '$2b$10$38/1o3Nj8mULUeFZOrmlfeFvZ0pat7P5m.o3SHq5MoCnFcLmzDsKi', 1000014, 0),
 ('mock', 'user', 'mock@user', 'mockpassword', 5555555, 1),
 ('admin', 'admin', 'admin@locaMat.fr', '$2b$10$wsqEZRcD/4Wr8LCFQrRXGeFCQmHCGzIHgNIV5CqXusCjpsMRzVaJa', 1000015, 1);

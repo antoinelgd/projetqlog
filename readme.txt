@@ -9,3 +9,11 @@
 ### TESTING ###
 
 To get the testing report, you can run the command "npm run test" or run the "tests.bat" file.
+
+
+
+### MISC ###
+
+GIT : https://github.com/antoinelgd/projetqlog
+
+ADMIN ACC LOGS : admin@locaMat.fr passwordAdmin
