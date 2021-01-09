@@ -1,7 +1,8 @@
 {
-    "lastname": "dujardin",
-    "firstname": "jean",
-    "email": "jean@dujardin",
-    "password": "oss117",
-    "admin": 1
+    "lastname": "user",
+    "firstname": "mock",
+    "email": "mock@user",
+    "password": "mockpassword",
+    "admin": 1,
+    "regnumber": 5555555
 }

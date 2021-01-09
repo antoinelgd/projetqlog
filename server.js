@@ -64,6 +64,7 @@ module.exports = {
     getBorrowingsOfDevice,
     isDateInsideBorrowing,
     generateAccessToken,
+    deleteBorrowing
 }
 app.get('/', authenticateToken, isUserAdmin, mainPage)
 app.get('/login', loginPage)
@@ -84,6 +85,7 @@ app.delete('/device', authenticateToken, isUserAdmin, deleteDevice)
 app.get('/borrow/:ref', authenticateToken, borrowDevicePage)
 app.post('/borrow', authenticateToken, borrowDevice)
 app.get('/borrowings', authenticateToken, isUserAdmin, borrowingsPage)
+app.delete('/borrowing',authenticateToken,isUserAdmin,deleteBorrowing)
 app.get('/device/edit/:id', authenticateToken, isUserAdmin, editDevicePage)
 app.post('/device/edit', authenticateToken, isUserAdmin, editDevice)
 app.get('/user/borrowings/:regnumber',authenticateToken,isUserAdmin, userBorrowingsPage)
@@ -307,6 +309,13 @@ async function borrowDevice(req, res) {
 async function borrowingsPage(req, res) {
     const borrowings = await getBorrowings()
     res.render('borrowings', { borrowings: borrowings, admin: req.admin })
+}
+
+async function deleteBorrowing(req,res) {
+    connection.query('DELETE FROM borrowings WHERE borrowing_id = ?', req.body.id, function (error, results, fields) {
+        if (error) res.sendStatus(500)
+        else res.sendStatus(200)
+    })
 }
 
 async function editDevicePage(req, res) {

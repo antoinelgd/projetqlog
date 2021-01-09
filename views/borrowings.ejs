@@ -39,8 +39,8 @@
 </form>
 
 <script>
-    async function deleteUser(email) {
-        const data = { email }
+    async function delBorrowing(id) {
+        const data = { id }
         const options = {
             method: 'DELETE',
             headers: {
@@ -48,7 +48,7 @@
             },
             body: JSON.stringify(data)
         }
-        const response = await fetch('/user', options)
+        const response = await fetch('/borrowing', options)
         location.reload()
     }
 </script>

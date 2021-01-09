@@ -1,6 +1,7 @@
 {
-    "name": "mockDevice",
-    "ref": "OP7",
-    "version": 1,
-    "stock": 2
+    "name": "mockdevice",
+    "ref": "MOCK",
+    "version": 0.0,
+    "stock": 1,
+    "deviceID": 555
 }

@@ -22,15 +22,8 @@ describe('Users', function () {
 
     it('should return true if user exists', async function () {
 
-        conn.query('INSERT INTO users (lastname,firstname,email,password,admin) VALUES (?,?,?,?,?)',
-            [mockUser.lastname, mockUser.firstname, mockUser.email, mockUser.password, mockUser.admin],
-            function (error, results, fields) { })
-
         const result = await app.checkUserExists(mockUser.email)
         expect(result).to.be.true
-
-        conn.query('DELETE FROM users WHERE email = ?', mockUser.email,
-            function (error, results, fields) { })
 
     })
 
@@ -44,15 +37,8 @@ describe('Users', function () {
     })
 
     it('Should return the password of the user', async function(){
-        conn.query('INSERT INTO users (lastname,firstname,email,password,admin) VALUES (?,?,?,?,?)',
-        [mockUser.lastname, mockUser.firstname, mockUser.email, mockUser.password, mockUser.admin],
-        function (error, results, fields) { })
-
         const password = await app.getPassword(mockUser.email)
         expect(password).to.be.equal(mockUser.password)
-
-        conn.query('DELETE FROM users WHERE email = ?', mockUser.email,
-        function (error, results, fields) { })
 
     })
 
@@ -61,7 +47,10 @@ describe('Users', function () {
         expect(password).to.be.equal(1000015)
     })
 
-
+    it('Should return user coresponding to the regnumber', async function(){
+        const user = await app.getUserByID(5555555)
+        expect(user.email).to.be.equal(mockUser.email)
+    })
 
 })
 
@@ -116,8 +105,15 @@ describe('Devices', function () {
             expect(devices.length).to.be.equal(count)
         })
     })
+
+    it('Should return device stock', async function(){
+        const stock = await app.getDeviceStock(mockDevice.ref)
+        expect(mockDevice.stock).to.be.equal(stock)
+    })
+
+    it('Should return device id', async function(){
+        const id = await app.getDevice(mockDevice.ref)
+        expect(mockDevice.deviceID).to.be.equal(id)
+    })
 })
 
-describe('Tokens', function(){
-    it('')
-})
