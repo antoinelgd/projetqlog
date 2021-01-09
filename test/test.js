@@ -59,7 +59,6 @@ describe('Users', function () {
     it('Should return the regnumber of the user', async function(){
         const password = await app.getUser('admin@locaMat.fr')
         expect(password).to.be.equal(1000015)
-
     })
 
 
