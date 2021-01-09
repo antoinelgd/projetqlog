@@ -1,4 +1,4 @@
-<h1>Loans</h1>
+<h1>Borrowings</h1>
 
 <table>
     <tr>
@@ -7,24 +7,24 @@
         <th>Ending Date</th>
         <th>Borrower</th>
     </tr>
-    <% loans.forEach(loan=> { %>
+    <% borrowings.forEach(borrowing=> { %>
         <tr>
             <td>
-                <%= loan.name %>
+                <%= borrowing.name %>
             </td>
             <td>
-                <%= loan.loan_start.toLocaleDateString() %>
+                <%= borrowing.borrowing_start.toLocaleDateString() %>
             </td>
             <td>
-                <%= loan.loan_end.toLocaleDateString() %>
+                <%= borrowing.borrowing_end.toLocaleDateString() %>
             </td>
             <td>
-                <%= loan.regnumber %>
+                <%= borrowing.regnumber %>
             </td>
 
             <% if (admin) { %>
                 <td>
-                    <button onclick="delLoan('<%= loan.loan_id %>')">Delete</button>
+                    <button onclick="delBorrowing('<%= borrowing.borrowing_id %>')">Delete</button>
                 </td>
                 <% } %>
 

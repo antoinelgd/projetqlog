@@ -44,7 +44,7 @@ module.exports = {
     deleteDevice,
     borrowDevicePage,
     borrowDevice,
-    loansPage,
+    borrowingsPage,
     editDevicePage,
     editDevice,
     isUserAdmin,
@@ -60,9 +60,9 @@ module.exports = {
     checkRefreshToken,
     getDevices,
     getUsers,
-    getLoans,
-    getLoansOfDevice,
-    isDateInsideLoan,
+    getBorrowings,
+    getBorrowingsOfDevice,
+    isDateInsideBorrowing,
     generateAccessToken,
 }
 app.get('/', authenticateToken, isUserAdmin, mainPage)
@@ -83,10 +83,10 @@ app.post('/device', authenticateToken, isUserAdmin, newDevice)
 app.delete('/device', authenticateToken, isUserAdmin, deleteDevice)
 app.get('/borrow/:ref', authenticateToken, borrowDevicePage)
 app.post('/borrow', authenticateToken, borrowDevice)
-app.get('/loans', authenticateToken, isUserAdmin, loansPage)
+app.get('/borrowings', authenticateToken, isUserAdmin, borrowingsPage)
 app.get('/device/edit/:id', authenticateToken, isUserAdmin, editDevicePage)
 app.post('/device/edit', authenticateToken, isUserAdmin, editDevice)
-app.get('/user/loans/:regnumber',authenticateToken,isUserAdmin, userLoansPage)
+app.get('/user/borrowings/:regnumber',authenticateToken,isUserAdmin, userBorrowingsPage)
 
 async function mainPage(req, res) {
     const devices = await getDevices()
@@ -290,7 +290,7 @@ async function borrowDevice(req, res) {
             if (deviceID == undefined) res.sendStatus(400)
             else {
 
-                connection.query('INSERT INTO loans (deviceID,loan_start,loan_end,borrower) VALUES (?,?,?,?)',
+                connection.query('INSERT INTO borrowings (deviceID,borrowing_start,borrowing_end,borrower) VALUES (?,?,?,?)',
                     [deviceID, req.body.startdate, req.body.enddate, userID],
                     function (err, res, fields) {
                         if (err) throw err
@@ -304,9 +304,9 @@ async function borrowDevice(req, res) {
     else res.status(400).render('error', { message: "Device not available on theses dates" })
 }
 
-async function loansPage(req, res) {
-    const loans = await getLoans()
-    res.render('loans', { loans: loans, admin: req.admin })
+async function borrowingsPage(req, res) {
+    const borrowings = await getBorrowings()
+    res.render('borrowings', { borrowings: borrowings, admin: req.admin })
 }
 
 async function editDevicePage(req, res) {
@@ -338,9 +338,9 @@ function editDevice(req, res) {
     res.redirect('/')
 }
 
-async function userLoansPage(req,res){
-    const loans = await getLoansOfUser(req.params.regnumber)
-    res.render('loans', { loans: loans, admin: req.admin })
+async function userBorrowingsPage(req,res){
+    const borrowings = await getBorrowingsOfUser(req.params.regnumber)
+    res.render('borrowings', { borrowings: borrowings, admin: req.admin })
 }
 
 
@@ -360,13 +360,13 @@ function isUserAdmin(req, res, next) {
 }
 
 async function checkDeviceAvailability(ref, startDate, endDate) {
-    const loans = await getLoansOfDevice(ref)
+    const borrowings = await getBorrowingsOfDevice(ref)
     let stockAvailable = await getDeviceStock(ref)
-    loans.forEach(loan => {
-        if (isDateInsideLoan(Date.parse(loan.loan_start), startDate, endDate)) stockAvailable--
-        else if (isDateInsideLoan(Date.parse(loan.loan_end), startDate, endDate)) stockAvailable--
-        else if (isDateInsideLoan(startDate, Date.parse(loan.loan_start), Date.parse(loan.loan_end))) stockAvailable--
-        else if (isDateInsideLoan(endDate, Date.parse(loan.loan_start), Date.parse(loan.loan_end))) stockAvailable--
+    borrowings.forEach(borrowing => {
+        if (isDateInsideBorrowing(Date.parse(borrowing.borrowing_start), startDate, endDate)) stockAvailable--
+        else if (isDateInsideBorrowing(Date.parse(borrowing.borrowing_end), startDate, endDate)) stockAvailable--
+        else if (isDateInsideBorrowing(startDate, Date.parse(borrowing.borrowing_start), Date.parse(borrowing.borrowing_end))) stockAvailable--
+        else if (isDateInsideBorrowing(endDate, Date.parse(borrowing.borrowing_start), Date.parse(borrowing.borrowing_end))) stockAvailable--
 
     });
     if (stockAvailable < 1) return false
@@ -498,35 +498,35 @@ function getUsers() {
     })
 }
 
-function getLoans() {
+function getBorrowings() {
     return new Promise(function (resolve, reject) {
-        connection.query('SELECT name, loan_start, loan_end, regnumber, loan_id FROM devices JOIN loans ON loans.deviceID = devices.deviceID JOIN users ON loans.borrower = users.regnumber', function (err, res, fie) {
+        connection.query('SELECT name, borrowing_start, borrowing_end, regnumber, borrowing_id FROM devices JOIN borrowings ON borrowings.deviceID = devices.deviceID JOIN users ON borrowings.borrower = users.regnumber', function (err, res, fie) {
             if (err) throw err
             resolve(res)
         })
     })
 }
 
-function getLoansOfDevice(ref) {
+function getBorrowingsOfDevice(ref) {
     return new Promise(function (resolve, reject) {
-        connection.query('SELECT name, loan_start, loan_end, regnumber, loan_id, stock FROM devices JOIN loans ON loans.deviceID = devices.deviceID JOIN users ON loans.borrower = users.regnumber WHERE devices.ref = ?', [ref], function (err, res, fie) {
+        connection.query('SELECT name, borrowing_start, borrowing_end, regnumber, borrowing_id, stock FROM devices JOIN borrowings ON borrowings.deviceID = devices.deviceID JOIN users ON borrowings.borrower = users.regnumber WHERE devices.ref = ?', [ref], function (err, res, fie) {
             if (err) throw err
             resolve(res)
         })
     })
 }
 
-function getLoansOfUser(regnumber) {
+function getBorrowingsOfUser(regnumber) {
     return new Promise(function (resolve, reject) {
-        connection.query('SELECT name, loan_start, loan_end, regnumber, loan_id, stock FROM devices JOIN loans ON loans.deviceID = devices.deviceID JOIN users ON loans.borrower = users.regnumber WHERE users.regnumber = ?', [regnumber], function (err, res, fie) {
+        connection.query('SELECT name, borrowing_start, borrowing_end, regnumber, borrowing_id, stock FROM devices JOIN borrowings ON borrowings.deviceID = devices.deviceID JOIN users ON borrowings.borrower = users.regnumber WHERE users.regnumber = ?', [regnumber], function (err, res, fie) {
             if (err) throw err
             resolve(res)
         })
     })
 }
 
-function isDateInsideLoan(date, loanStart, loanEnd) {
-    if (date >= loanStart && date <= loanEnd) {
+function isDateInsideBorrowing(date, borrowingStart, borrowingEnd) {
+    if (date >= borrowingStart && date <= borrowingEnd) {
         return true
     }
     else return false

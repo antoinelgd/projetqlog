@@ -68,40 +68,40 @@ describe('Users', function () {
 
 describe('Date check', function () {
     it('Should return true if a date is between to dates', function () {
-        result = app.isDateInsideLoan(2, 1, 3)
+        result = app.isDateInsideBorrowing(2, 1, 3)
         expect(result).to.be.true
     })
 
     it('Should return false if a date is not between to dates', function () {
-        result = app.isDateInsideLoan(4, 1, 3)
+        result = app.isDateInsideBorrowing(4, 1, 3)
         expect(result).to.be.false
     })
 })
 
-describe('Loans', function () {
-    it('Should return an array which length is equal to the number of loans', async function () {
-        conn.query('SELECT count(*) FROM devices JOIN loans ON loans.deviceID = devices.deviceID JOIN users ON loans.borrower = users.regnumber', async function (err, res, fie) {
+describe('Borrowings', function () {
+    it('Should return an array which length is equal to the number of borrowings', async function () {
+        conn.query('SELECT count(*) FROM devices JOIN borrowings ON borrowings.deviceID = devices.deviceID JOIN users ON borrowings.borrower = users.regnumber', async function (err, res, fie) {
             const count = res[0]
-            const loans = await app.getLoans()
-            expect(loans.length).to.be.equal(count)
+            const borrowings = await app.getBorrowings()
+            expect(borrowings.length).to.be.equal(count)
         })
     })
 
-    it('Should return an array which length is equal to the number of loans of a particular device', async function () {
+    it('Should return an array which length is equal to the number of borrowings of a particular device', async function () {
 
-        conn.query('SELECT count(*) FROM devices JOIN loans ON loans.deviceID = devices.deviceID JOIN users ON loans.borrower = users.regnumber WHERE devices.ref = ?', mockDevice.ref, async function (err, res, fie) {
+        conn.query('SELECT count(*) FROM devices JOIN borrowings ON borrowings.deviceID = devices.deviceID JOIN users ON borrowings.borrower = users.regnumber WHERE devices.ref = ?', mockDevice.ref, async function (err, res, fie) {
             const count = res[0]
-            const loans = await app.getLoansOfDevice(mockDevice.ref)
-            expect(loans.length).to.be.equal(count)
+            const borrowings = await app.getBorrowingsOfDevice(mockDevice.ref)
+            expect(borrowings.length).to.be.equal(count)
         })
     })
 
-    it('Should return an array which length is equal to the number of loans of a particular user', async function () {
+    it('Should return an array which length is equal to the number of borrowings of a particular user', async function () {
 
-        conn.query('SELECT count(*) FROM devices JOIN loans ON loans.deviceID = devices.deviceID JOIN users ON loans.borrower = users.regnumber WHERE users.regnumber = ?', mockUser.regnumber, async function (err, res, fie) {
+        conn.query('SELECT count(*) FROM devices JOIN borrowings ON borrowings.deviceID = devices.deviceID JOIN users ON borrowings.borrower = users.regnumber WHERE users.regnumber = ?', mockUser.regnumber, async function (err, res, fie) {
             const count = res[0]
-            const loans = await app.getLoansOfUser(mockUser.regnumber)
-            expect(loans.length).to.be.equal(count)
+            const borrowings = await app.getBorrowingsOfUser(mockUser.regnumber)
+            expect(borrowings.length).to.be.equal(count)
         })
     })
 
@@ -113,7 +113,7 @@ describe('Devices', function () {
 
         conn.query('SELECT count(*) FROM devices', async function (err, res, fie) {
             const count = res[0]
-            const devices = await app.getLoansOfUser(mockUser.regnumber)
+            const devices = await app.getBorrowingsOfUser(mockUser.regnumber)
             expect(devices.length).to.be.equal(count)
         })
     })
