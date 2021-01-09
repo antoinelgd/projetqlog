@@ -1,24 +1,24 @@
 const chai = require('chai')
-const should = chai.should()
 const expect = chai.expect
-const chaiAsPromised = require('chai-as-promised')
 const conn = require('../server').connection
 const app = require('../server')
-const server = require('../server').app
-const sinon = require('sinon')
 const mockUser = require('../mock/mockUser.json')
 const mockDevice = require('../mock/mockDevice.json')
-const bcrypt = require('bcrypt')
+const request = require('supertest')
 
-chai.use(chaiAsPromised)
 
-afterEach(() => {
-    sinon.restore()
+
+describe('Routes', function(){
+    it('should redirect to /login', function(){
+        request(app)
+            .post('/login')
+            .send({email: 'admin@locaMat.fr', password: ''})
+            .expect('Location', '/login')
+            .end(done)
+    })
 })
 
 describe('Users', function () {
-
-    const connmock = sinon.mock(conn)
 
     it('should return true if user exists', async function () {
 
@@ -97,11 +97,12 @@ describe('Borrowings', function () {
 
 
 describe('Devices', function () {
+
     it('Should return an array which length is equal to the number of devices', async function () {
 
         conn.query('SELECT count(*) FROM devices', async function (err, res, fie) {
             const count = res[0]
-            const devices = await app.getBorrowingsOfUser(mockUser.regnumber)
+            const devices = await app.getDevices()
             expect(devices.length).to.be.equal(count)
         })
     })
@@ -115,5 +116,11 @@ describe('Devices', function () {
         const id = await app.getDevice(mockDevice.ref)
         expect(mockDevice.deviceID).to.be.equal(id)
     })
+
+    it('Should return device given its ID', async function(){
+        const device = await app.getDeviceByID(mockDevice.deviceID)
+        expect(device.name).to.be.equal(mockDevice.name)
+    })
 })
+
 

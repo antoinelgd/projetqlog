@@ -46,6 +46,7 @@ INSERT INTO `devices` (`deviceID`, `name`, `version`, `ref`, `stock`) VALUES
 (35, 'OnePlus 7', 'V11.0', 'AN002', 20),
 (36, 'Nokia 3310', 'V1.2', 'TC001', 1142),
 (37, 'Iphone X', 'V14.3', 'AA001', 33),
+(555, 'mockdevice', '0.0', 'MOCK', 1),
 (38, 'Blackberry Bold 9900 ', 'V9.0', 'BB001', 4);
 
 -- --------------------------------------------------------
@@ -94,13 +95,6 @@ CREATE TABLE IF NOT EXISTS `refresh_tokens` (
   PRIMARY KEY (`token`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Déchargement des données de la table `refresh_tokens`
---
-
-INSERT INTO `refresh_tokens` (`token`) VALUES
-('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FNYXQuZnIiLCJpYXQiOjE2MTAyMDA1NDN9.1Qo3Dv0Xmusx4iUmUL_OA-Sqa-qrqtlnBsXLCIFsglo');
-
 -- --------------------------------------------------------
 
 --
@@ -128,6 +122,7 @@ INSERT INTO `users` (`lastname`, `firstname`, `email`, `password`, `regnumber`, 
 ('Mbappe', 'Kylian', 'petitpont@hotmail.com', '$2b$10$NUVs.r/gOzzAvtDgMz5wb./DtP694P1Zd5nTd.kAk6WR3yaNzLLS.', 1000011, 1),
 ('Claquart', 'Taudine', 'taudine.claquart@univ-tours.fr', '$2b$10$8CEFLgcHxodFdDY/yNVuV.FX4yISPjBwz6D2ebXGW08OOoYWEa1fq', 1000013, 0),
 ('Hamilton', 'Lewis', 'alwaysP1@gmail.com', '$2b$10$38/1o3Nj8mULUeFZOrmlfeFvZ0pat7P5m.o3SHq5MoCnFcLmzDsKi', 1000014, 0),
+('mock', 'user', 'mock@user', 'mockpassword', 5555555, 1),
 ('admin', 'admin', 'admin@locaMat.fr', '$2b$10$wsqEZRcD/4Wr8LCFQrRXGeFCQmHCGzIHgNIV5CqXusCjpsMRzVaJa', 1000015, 1);
 
 --
