@@ -1,0 +1,47 @@
+  Routes
+    Logout
+      √ Should redirect to /login
+    Register
+      √ Should render register page
+      √ Should render register page
+    Main
+      √ Should redirect to /login
+      √ Should redirect to /refreshAccessToken
+    RefreshAccessToken
+      √ Should redirect to / and give an access token
+    Login
+      √ should redirect to /
+      √ should redirect to /login
+      √ Should render login page
+
+  Users
+    √ should return true if user exists
+    √ Should return an array which length is equal to the number of users in database
+    √ Should return the password of the user
+    √ Should return the regnumber of the user
+    √ Should return user coresponding to the regnumber
+
+  Date check
+    √ Should return true if a date is between to dates
+    √ Should return false if a date is not between to dates
+
+  Borrowings
+    √ Should return an array which length is equal to the number of borrowings
+    √ Should return an array which length is equal to the number of borrowings of a particular device
+    √ Should return an array which length is equal to the number of borrowings of a particular user
+
+  Devices
+    √ Should return an array which length is equal to the number of devices
+    √ Should return device stock
+    √ Should return device id
+    √ Should return device given its ID
+
+
+  23 passing (181ms)
+
+-----------|---------|----------|---------|---------|-----------------------------------------------------------------------
+File       | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
+-----------|---------|----------|---------|---------|-----------------------------------------------------------------------
+All files  |   44.86 |    23.57 |   53.33 |   52.89 | 
+ server.js |   44.86 |    23.57 |   53.33 |   52.89 | 94-95,106,117,128,156,165-169,178-382,396-400,460,474,483,485,529-532
+-----------|---------|----------|---------|---------|-----------------------------------------------------------------------

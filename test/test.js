@@ -1,21 +1,117 @@
 const chai = require('chai')
 const expect = chai.expect
+const should = require('chai').should()
 const conn = require('../server').connection
 const app = require('../server')
+const appli = require('../server').app
 const mockUser = require('../mock/mockUser.json')
 const mockDevice = require('../mock/mockDevice.json')
 const request = require('supertest')
 
 
-
-describe('Routes', function(){
-    it('should redirect to /login', function(){
-        request(app)
-            .post('/login')
-            .send({email: 'admin@locaMat.fr', password: ''})
-            .expect('Location', '/login')
-            .end(done)
+afterEach(function(){
+    conn.query('DELETE FROM users WHERE email = ?','user@mock',function (err, res, fie) {
     })
+})
+describe('Routes', function () {
+
+    describe('Logout', function () {
+        it('Should redirect to /login', function () {
+            request(appli)
+                .post('/logout')
+                .set('Cookie', ['refresh_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FNYXQuZnIiLCJpYXQiOjE2MTAyMDg0Mjl9.D7CW3Uicy_cALdaX5ZT8gLpCLrfjis1n4T7OtMvicvA'])
+                .then((res) => {
+                    res.header['location'].should.include('/login')
+                    res.header['set-cookie'].should.be.undefined
+                })
+        })
+    })
+
+    describe('Register', function () {
+        it('Should render register page', function () {
+            request(appli)
+                .get('/register')
+                .end((err, res) => {
+                    expect(res.text).not.to.be.undefined
+                })
+        })
+
+        it('Should render register page', function () {
+            request(appli)
+                .post('/register')
+                .send({ lastname: 'mock', firstname: 'user', email: 'user@mock', password: 'mock' })
+                .end((err, res) => {
+                    res.header['location'].should.include('/login')
+                })
+        })
+        
+    })
+
+ 
+
+    describe('Main', function () {
+        it('Should redirect to /login', function () {
+            request(appli)
+                .get('/')
+                .then((res) => {
+                    res.header['location'].should.include('/login')
+                })
+        })
+
+        it('Should redirect to /refreshAccessToken', function () {
+            request(appli)
+                .get('/')
+                .set('Cookie', ['refresh_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FNYXQuZnIiLCJpYXQiOjE2MTAyMDg0Mjl9.D7CW3Uicy_cALdaX5ZT8gLpCLrfjis1n4T7OtMvicvA'])
+                .then((res) => {
+                    res.header['location'].should.include('/login')
+
+                })
+        })
+    })
+
+
+    describe('RefreshAccessToken', function () {
+        it('Should redirect to / and give an access token', function () {
+            request(appli)
+                .get('/refreshAccessToken')
+                .set('Cookie', ['refresh_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGxvY2FNYXQuZnIiLCJpYXQiOjE2MTAyMDg0Mjl9.D7CW3Uicy_cALdaX5ZT8gLpCLrfjis1n4T7OtMvicvA'])
+                .then((res) => {
+                    res.header['location'].should.include('/')
+                    res.header['set-cookie'].should.not.be.undefined
+                })
+        })
+    })
+
+
+    describe('Login', function () {
+        it('should redirect to /', function () {
+            request(appli)
+                .post('/login')
+                .send({ email: 'admin@locaMat.fr', password: 'passwordAdmin' })
+                .then((res) => {
+                    res.header['location'].should.include('/')
+                })
+        })
+
+        it('should redirect to /login', function () {
+            request(appli)
+                .post('/login')
+                .send({ email: 'admin@locaMat.fr', password: undefined })
+                .then((res) => {
+                    res.header['location'].should.include('/login')
+                })
+        })
+
+        it('Should render login page', function () {
+            request(appli)
+                .get('/login')
+                .end((err, res) => {
+                    expect(res.text).not.to.be.undefined
+                })
+        })
+    })
+
+
 })
 
 describe('Users', function () {
@@ -36,18 +132,18 @@ describe('Users', function () {
         })
     })
 
-    it('Should return the password of the user', async function(){
+    it('Should return the password of the user', async function () {
         const password = await app.getPassword(mockUser.email)
         expect(password).to.be.equal(mockUser.password)
 
     })
 
-    it('Should return the regnumber of the user', async function(){
+    it('Should return the regnumber of the user', async function () {
         const password = await app.getUser('admin@locaMat.fr')
         expect(password).to.be.equal(1000015)
     })
 
-    it('Should return user coresponding to the regnumber', async function(){
+    it('Should return user coresponding to the regnumber', async function () {
         const user = await app.getUserByID(5555555)
         expect(user.email).to.be.equal(mockUser.email)
     })
@@ -107,17 +203,17 @@ describe('Devices', function () {
         })
     })
 
-    it('Should return device stock', async function(){
+    it('Should return device stock', async function () {
         const stock = await app.getDeviceStock(mockDevice.ref)
         expect(mockDevice.stock).to.be.equal(stock)
     })
 
-    it('Should return device id', async function(){
+    it('Should return device id', async function () {
         const id = await app.getDevice(mockDevice.ref)
         expect(mockDevice.deviceID).to.be.equal(id)
     })
 
-    it('Should return device given its ID', async function(){
+    it('Should return device given its ID', async function () {
         const device = await app.getDeviceByID(mockDevice.deviceID)
         expect(device.name).to.be.equal(mockDevice.name)
     })

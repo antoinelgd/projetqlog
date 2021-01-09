@@ -66,29 +66,29 @@ module.exports = {
     generateAccessToken,
     deleteBorrowing
 }
-app.get('/', authenticateToken, isUserAdmin, mainPage)
+app.get('/', authenticateToken, isUserAdmin, mainPage) 
 app.get('/login', loginPage)
 app.post('/login', login)
 app.post('/logout', logout)
 app.get('/register', registerPage)
 app.post('/register', register)
 app.get('/refreshAccessToken', refreshAccessToken)
-app.get('/users', authenticateToken, isUserAdmin, usersPage)
-app.get('/user/new', authenticateToken, isUserAdmin, newUserPage)
-app.delete('/user', authenticateToken, isUserAdmin, deleteUser)
-app.post('/user/new', authenticateToken, isUserAdmin, newUser)
-app.get('/user/edit/:regnumber', authenticateToken, isUserAdmin, editUserPage)
-app.post('/user/edit', authenticateToken, isUserAdmin, editUser)
-app.get('/device', authenticateToken, isUserAdmin, devicePage)
-app.post('/device', authenticateToken, isUserAdmin, newDevice)
-app.delete('/device', authenticateToken, isUserAdmin, deleteDevice)
+app.get('/users', authenticateToken, isUserAdmin,barrier, usersPage)
+app.get('/user/new', authenticateToken, isUserAdmin,barrier, newUserPage)
+app.delete('/user', authenticateToken, isUserAdmin,barrier, deleteUser)
+app.post('/user/new', authenticateToken, isUserAdmin,barrier, newUser)
+app.get('/user/edit/:regnumber', authenticateToken,barrier, isUserAdmin, editUserPage)
+app.post('/user/edit', authenticateToken, isUserAdmin,barrier, editUser)
+app.get('/device', authenticateToken, isUserAdmin,barrier, devicePage)
+app.post('/device', authenticateToken, isUserAdmin,barrier, newDevice)
+app.delete('/device', authenticateToken, isUserAdmin,barrier, deleteDevice)
 app.get('/borrow/:ref', authenticateToken, borrowDevicePage)
 app.post('/borrow', authenticateToken, borrowDevice)
-app.get('/borrowings', authenticateToken, isUserAdmin, borrowingsPage)
-app.delete('/borrowing',authenticateToken,isUserAdmin,deleteBorrowing)
-app.get('/device/edit/:id', authenticateToken, isUserAdmin, editDevicePage)
-app.post('/device/edit', authenticateToken, isUserAdmin, editDevice)
-app.get('/user/borrowings/:regnumber',authenticateToken,isUserAdmin, userBorrowingsPage)
+app.get('/borrowings', authenticateToken, isUserAdmin,barrier, borrowingsPage)
+app.delete('/borrowing',authenticateToken,isUserAdmin,barrier,deleteBorrowing)
+app.get('/device/edit/:id', authenticateToken, isUserAdmin,barrier, editDevicePage)
+app.post('/device/edit', authenticateToken, isUserAdmin,barrier, editDevice)
+app.get('/user/borrowings/:regnumber',authenticateToken,isUserAdmin,barrier, userBorrowingsPage)
 
 async function mainPage(req, res) {
     const devices = await getDevices()
@@ -544,4 +544,14 @@ function isDateInsideBorrowing(date, borrowingStart, borrowingEnd) {
 function generateAccessToken(email) {
     return jwt.sign(email, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '10m' })
 }
+
+function barrier(req,res,next){
+    if(req.admin != 1){
+        res.redirect('/')
+    }
+    else{
+        next()
+    }
+}
+
 app.listen(3000, () => { console.log('listening on port 3000') })
